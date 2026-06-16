@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  back:
+    build: ./back
+    container_name: book-back
+    ports:
+      - "8000:8000"
+    networks:
+      - book-network
+
+  front:
+    build: ./front
+    container_name: book-front
+    ports:
+      - "8501:8501"
+    environment:
+      - FASTAPI_URL=http://back:8000
+    depends_on:
+      - back
+    networks:
+      - book-network
+
+networks:
+  book-network:
+    driver: bridge
